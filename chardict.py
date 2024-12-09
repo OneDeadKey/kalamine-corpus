@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Turn corpus texts into dictionaries of symbols and digrams."""
+"""Turn corpus texts into dictionaries of symbols, bigrams and trigrams."""
 
 import json
 from os import listdir, path
@@ -9,10 +9,10 @@ IGNORED_CHARS = "1234567890 \t\r\n\ufeff"
 
 
 def parse_corpus(file_path):
-    """Count symbols and digrams in a text file."""
+    """Count symbols, bigrams and trigrams in a text file."""
 
     symbols = {}
-    digrams = {}
+    bigrams = {}
     trigrams = {}
     char_count = 0
     prev_symbol = None
@@ -28,12 +28,12 @@ def parse_corpus(file_path):
                 symbols[symbol] = 0
             symbols[symbol] += 1
             if prev_symbol is not None:
-                digram = prev_symbol + symbol
-                if digram not in digrams:
-                    digrams[digram] = 0
-                digrams[digram] += 1
+                bigram = prev_symbol + symbol
+                if bigram not in bigrams:
+                    bigrams[bigram] = 0
+                bigrams[bigram] += 1
                 if prev_prev_symbol is not None:
-                    trigram = prev_prev_symbol + digram
+                    trigram = prev_prev_symbol + bigram
                     if trigram not in trigrams:
                         trigrams[trigram] = 0
                     trigrams[trigram] += 1
@@ -55,7 +55,7 @@ def parse_corpus(file_path):
     results = {}
     results["corpus"] = file_path
     results["symbols"] = sort_by_frequency(symbols)
-    results["digrams"] = sort_by_frequency(digrams, 4)
+    results["bigrams"] = sort_by_frequency(bigrams, 4)
     results["trigrams"] = sort_by_frequency(trigrams)
     return results
 
@@ -66,11 +66,13 @@ if __name__ == "__main__":
         print(json.dumps(data, indent=4, ensure_ascii=False))
     else:  # converts all *.txt files in the script directory
         rootdir = path.dirname(__file__)
-        destdir = path.join(rootdir, "..", "corpus")
-        for filename in listdir(rootdir):
+        destdir = path.join(rootdir, "json")
+        txtdir = path.join(rootdir, "txt")
+        for filename in listdir(txtdir):
             if filename.endswith(".txt"):
-                print(f"    {filename}...")
-                data = parse_corpus(path.join(rootdir, filename))
-                destfile = path.join(destdir, filename[:-4] + ".json")
+                basename = filename[:-4]
+                print(f"...  {basename}")
+                data = parse_corpus(path.join(txtdir, filename))
+                destfile = path.join(destdir, basename + ".json")
                 with open(destfile, "w", encoding="utf-8") as outfile:
                     json.dump(data, outfile, indent=4, ensure_ascii=False)

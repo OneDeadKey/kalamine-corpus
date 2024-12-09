@@ -6,7 +6,7 @@ echo "Gutenberg..."
 for corpus in corpus/gutenberg/*.txt
 do
     file=$(basename $corpus)
-    name=${file%.*.*}
+    name=${file%.*}
     echo "...  $name"
     cp $corpus txt/$name.txt
 done
