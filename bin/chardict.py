@@ -65,9 +65,9 @@ if __name__ == "__main__":
         data = parse_corpus(argv[1])
         print(json.dumps(data, indent=4, ensure_ascii=False))
     else:  # converts all *.txt files in the script directory
-        rootdir = path.dirname(__file__)
-        destdir = path.join(rootdir, "json")
-        txtdir = path.join(rootdir, "txt")
+        bin_dir = path.dirname(__file__)
+        destdir = path.join(bin_dir, "..", "json")
+        txtdir = path.join(bin_dir, "..", "txt")
         for filename in listdir(txtdir):
             if filename.endswith(".txt"):
                 basename = filename[:-4]
