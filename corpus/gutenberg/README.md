@@ -11,7 +11,7 @@ A few books can be taken from this repository. So far, we have picked:
 | The Adventures of Pinocchio (Carlo Collodi)        |          | [en][8]  |          |          | [it][9]  |
 
 <!-- Alice’s Adventures in Wonderland (Lewis Carroll) -->
-[1]: https://www.gutenberg.org/ebooks/19778 <!-- de -->
+[1]: https://www.gutenberg.org/ebooks/19778
 [2]: https://www.gutenberg.org/ebooks/11 <!-- en -->
 [3]: https://www.gutenberg.org/ebooks/55456 <!-- fr -->
 [4]: https://www.gutenberg.org/ebooks/28371 <!-- it -->
