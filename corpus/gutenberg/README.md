@@ -4,10 +4,10 @@ A few books can be taken from this repository. So far, we have picked:
 
 | Book                                               | de       | en       | es       | fr       | it       |
 | :------------------------------------------------- | :------: | :------: | :------: | :------: | :------: | 
-| Faust (Johann Wolfgang von Goethe)                 | [de][15], [de][16] | [en][17] | [es][18] | [fr][19] |   |
+| Faust (Johann Wolfgang von Goethe)                 | [1][15] [2][16] | [en][17] | [es][18] | [fr][19] |   |
 | Alice’s Adventures in Wonderland (Lewis Carroll)   | [de][1]  | [en][2]  |          | [fr][3]  | [it][4]  |
 | Don Quixote (Miguel de Cervantes Saavedra)         |          | [en][5]  | [es][6]  | [fr][7]  |          |
-| The Count of Monte Cristo (A. Dumas and A. Maquet) |          | [en][10] |          | [fr][11], [fr][12], [fr][13], [fr][14] |   |
+| The Count of Monte Cristo (A. Dumas and A. Maquet) |          | [en][10] |          | [1][11] [2][12] [3][13] [4][14] |   |
 | The Adventures of Pinocchio (Carlo Collodi)        |          | [en][8]  |          |          | [it][9]  |
 
 <!-- Alice’s Adventures in Wonderland (Lewis Carroll) -->
