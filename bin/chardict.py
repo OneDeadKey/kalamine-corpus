@@ -66,7 +66,7 @@ if __name__ == "__main__":
         print(json.dumps(data, indent=4, ensure_ascii=False))
     else:  # converts all *.txt files in the script directory
         bin_dir = path.dirname(__file__)
-        destdir = path.join(bin_dir, "..", "json")
+        destdir = path.join(bin_dir, "..", "txt")
         txtdir = path.join(bin_dir, "..", "txt")
         for filename in listdir(txtdir):
             if filename.endswith(".txt"):
