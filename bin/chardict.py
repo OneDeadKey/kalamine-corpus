@@ -4,6 +4,7 @@
 import json
 from pathlib import Path
 from sys import argv
+import platformdirs
 
 NGRAM_MAX_LENGTH = 5  # Quadrigrams
 IGNORED_CHARS = "1234567890 \t\r\n\ufeff↵"
@@ -98,6 +99,30 @@ def read_corpus(file_path: str, name: str = "", encoding="utf-8") -> dict:
         "freq": ngrams_freq,
         "count": ngrams_count,
     }
+
+
+def add(file_path: str, name: str = "", encoding="utf-8"):
+    corpus = read_corpus(file_path, name, encoding)
+    if corpus is not None:
+        data_path = Path(platformdirs.user_config_dir(APP_NAME, APP_AUTHOR)) / "corpora"
+        data_path.mkdir(parents=True, exist_ok=True)
+        data_path = data_path / f"{corpus["name"]}.json"
+        try:
+            with data_path.open("w", encoding="utf-8") as outfile:
+                json.dump(corpus, outfile, indent=4, ensure_ascii=False)
+                print(f"Corpus “{corpus['name']}” added to {data_path}")
+        except:
+            print(f"Error: could not write to {data_path}")
+
+
+def rm(name: str):
+    corpus_path = Path(platformdirs.user_config_dir(APP_NAME, APP_AUTHOR)) / "corpora"
+    corpus_path = corpus_path / f"{name}.json"
+    try:
+        corpus_path.unlink()
+        print(f"Corpus “{name}” deleted")
+    except FileNotFoundError:
+        print(f"Corpus “{name}” does not exist")
 
 
 if __name__ == "__main__":
