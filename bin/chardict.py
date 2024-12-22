@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 from sys import argv
 
-NGRAM_MAX_LENGTH = 5  # Quadrigrams
+NGRAM_MAX_LENGTH = 4  # trigrams
 IGNORED_CHARS = "1234567890 \t\r\n\ufeff↵"
 APP_NAME = "kalamine"
 APP_AUTHOR = "1dk"
@@ -77,16 +77,15 @@ def parse_corpus(txt: str) -> dict:
     return ngrams, ngrams_count
 
 
-def read_corpus(file_path: str, name: str = "", encoding="utf-8") -> dict:
+def read_corpus(file: Path, name: str = "", encoding="utf-8") -> dict:
     """read a .txt file and provide a dictionary of n-grams"""
     try:
-        path = Path(file_path)
-        if not path.is_file:
+        if not file.is_file:
             raise Exception("Error, this is not a file")
         if not name:
-            name = path.stem
-        with path.open("r", encoding=encoding) as file:
-            corpus_txt = "↵".join(file.readlines())
+            name = file.stem
+        with file.open("r", encoding=encoding) as f:
+            corpus_txt = "↵".join(f.readlines())
 
     except Exception as e:
         print(f"file does not exist or could not be read.\n {e}")
@@ -94,7 +93,6 @@ def read_corpus(file_path: str, name: str = "", encoding="utf-8") -> dict:
     ngrams_freq, ngrams_count = parse_corpus(corpus_txt)
     return {
         "name": name,
-        #   "text": corpus_txt,
         "freq": ngrams_freq,
         "count": ngrams_count,
     }
@@ -102,18 +100,19 @@ def read_corpus(file_path: str, name: str = "", encoding="utf-8") -> dict:
 
 if __name__ == "__main__":
     if len(argv) == 2:  # convert one file
-        file_path = Path(argv[1])
-        data = read_corpus(str(file_path))
-        output_file_path = file_path.parent / f"{file_path.stem}.json"
+        file = Path(argv[1])
+        data = read_corpus(file)
+        output_file_path = file.parent / f"{file.stem}.json"
         with open(output_file_path, "w", encoding="utf-8") as outfile:
             json.dump(data, outfile, indent=4, ensure_ascii=False)
         print(json.dumps(data, indent=4, ensure_ascii=False))
 
     else:  # converts all *.txt files in the script directory
-        curent_path = Path(__file__).resolve().parent
-        for file in curent_path.glob("*.txt"):
+        txt_dir = Path(__file__).resolve().parent.parent / "txt"
+        for file in sorted(txt_dir.glob("*.txt")):
             if file.is_file():
-                data = read_corpus(str(file))
-                output_file_path = file.parent / f"{file.stem}.json"
+                print(f"...  {file.stem}")
+                data = read_corpus(file)
+                output_file_path = txt_dir / f"{file.stem}.json"
                 with open(output_file_path, "w", encoding="utf-8") as outfile:
                     json.dump(data, outfile, indent=4, ensure_ascii=False)

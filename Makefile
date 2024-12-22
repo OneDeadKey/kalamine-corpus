@@ -15,6 +15,7 @@ json:
 	@mkdir -p json
 	@echo "Creating JSON dicts..."
 	@bin/chardict.py
+	@echo "Merging JSON dicts..."
 	@echo "...  de_modern"
 	@bin/merge.py txt/deu_*.json > json/de_modern.json
 	@echo "...  en_modern"
