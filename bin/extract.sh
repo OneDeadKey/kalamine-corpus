@@ -11,7 +11,7 @@ do
     cp $corpus txt/$name.txt
 done
 sed -i '/\[Illustration\]/d'  txt/*.txt
-sed -i '1,/START/d' txt/*.txt
+sed -i '1,/START OF THE PROJECT GUTENBERG/d' txt/*.txt
 sed -i '/END OF THE PROJECT GUTENBERG/,$d' txt/*.txt
 sed -i '/End of Project Gutenberg/d' txt/*.txt
 sed -i '/\*       \*/d' txt/*.txt 
