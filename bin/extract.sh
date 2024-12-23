@@ -13,7 +13,7 @@ done
 sed -i '/\[Illustration\]/d'  txt/*.txt
 sed -i '1,/START/d' txt/*.txt
 sed -i '/END OF THE PROJECT GUTENBERG/,$d' txt/*.txt
-sed -i '/End of Project/d' txt/*.txt
+sed -i '/End of Project Gutenberg/d' txt/*.txt
 sed -i '/\*       \*/d' txt/*.txt 
 for f in txt/*-[1-9].txt
 do
