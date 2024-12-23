@@ -19,10 +19,8 @@ for f in txt/*-[1-9].txt
 do
     volume=$(echo "$f" | sed 's/-[1-9].txt//g');
     cat "$volume"-[1-9].txt > "$volume".txt
-done
-if [ -f "$volume".txt ] ;then
     rm "$volume"-[1-9].txt
-fi
+done
 
 echo "Leipzig..."
 for corpus in corpus/leipzig/*.tar.gz
