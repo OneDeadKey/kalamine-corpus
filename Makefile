@@ -1,6 +1,6 @@
-.PHONY: all txt extract fancy json
+.PHONY: all txt extract fancy json mix clean
 
-all: extract fancy json
+all: extract fancy json mix
 
 txt: extract fancy
 
@@ -12,9 +12,11 @@ fancy:
 	@bin/fancify.sh
 
 json:
-	@mkdir -p json
 	@echo "Creating JSON dicts..."
 	@bin/chardict.py
+
+mix:
+	@mkdir -p json
 	@echo "Merging JSON dicts..."
 	@echo "...  de_modern"
 	@bin/merge.py txt/deu_*.json > json/de_modern.json
@@ -37,3 +39,5 @@ json:
 	@echo "...  it_literary"
 	@bin/merge.py txt/it_*.json > json/it_literary.json
 
+clean:
+	@rm -rf txt

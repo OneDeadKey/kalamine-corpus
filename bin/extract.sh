@@ -1,6 +1,7 @@
 #!/usr/bin/sh
 
 mkdir -p txt
+rm txt/*.txt
 
 echo "Gutenberg..."
 for corpus in corpus/gutenberg/*.txt
@@ -9,6 +10,17 @@ do
     name=${file%.*}
     echo "...  $name"
     cp $corpus txt/$name.txt
+    sed -i '/\[Illustration\]/d'                 txt/$name.txt
+    sed -i '1,/START OF THE PROJECT GUTENBERG/d' txt/$name.txt
+    sed -i '/END OF THE PROJECT GUTENBERG/,$d'   txt/$name.txt
+    sed -i '/^End of Project Gutenberg/d'        txt/$name.txt
+    sed -i '/\*       \*/d'                      txt/$name.txt
+done
+for file in txt/*_[1-9].txt
+do
+    volume=$(echo "$file" | sed 's/_[1-9].txt//g')
+    cat "$file" >> "$volume".txt
+    rm "$file"
 done
 
 echo "Leipzig..."
