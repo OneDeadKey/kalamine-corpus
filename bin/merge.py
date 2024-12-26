@@ -59,34 +59,31 @@ def mergeable(corpora:list[dict]) -> bool:
     print(error_str)
     return False
 
-def mix(corpora:list[dict], name:str="mixed", ratio:list[float]=[]) -> dict:
+def mix(corpora:list[dict], name:str="mixed", weights:list[float]=None) -> dict:
     """merge corpora of same n-gram length, optionally with a giver ratio"""
-    if ratio == []:
+    weights = weights or []
+    if weights == []:
         # merge with same weight by default
-        ratio = [ 1/len(corpora) ] * len(corpora)
-    elif round(sum(ratio),1) != 1:
+        weights = [ 1/len(corpora) ] * len(corpora)
+    elif round(sum(weights),1) != 1:
         print("Error: provided merge ratio do not add-up to 1; aborting merge")
 
-    output_corpus = corpora[0].copy()
-    output_corpus["name"] = name
+    ngram_length = range(1, len(corpora[0]["freq"].keys()) +1)
 
-    # manage 1st corpus
-    for index in output_corpus["freq"]:
-        n = str(index)
-        for ngram in output_corpus["freq"][n]:
-            output_corpus["freq"][n][ngram] *= ratio[0]
+    output_corpus = {
+        "name": name,
+        "freq": {str(n):{} for n in ngram_length},
+        "count": {str(n):0 for n in ngram_length},
+    }
 
-    # manage others
-    for index in range(1, len(output_corpus["freq"].keys()) +1):
+    for index in ngram_length:
         n = str(index)
-        for corpus_index, corpus in enumerate(corpora[1:]):
-            print(corpus, corpus_index)
+        for corpus_index, corpus in enumerate(corpora):
             output_corpus["count"][n] += corpus["count"][n]
-
             for ngram in corpus["freq"][n]:
                 if ngram not in output_corpus["freq"][n]:
                     output_corpus["freq"][n][ngram] = 0
-                output_corpus["freq"][n][ngram] += corpus["freq"][n][ngram] * ratio[corpus_index]
+                output_corpus["freq"][n][ngram] += corpus["freq"][n][ngram] * weights[corpus_index]
     return output_corpus
 
 
