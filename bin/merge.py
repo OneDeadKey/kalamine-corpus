@@ -37,10 +37,14 @@ def read_corpora(filenames: list[Path]) -> list[dict]:
                 f"Warning: cannot open the `{filename.stem}` corpus; skipping this file"
             )
             continue
+    return corpora
 
+def mergeable(corpora:list[dict]) -> bool:
+    """check if corpora cam be merge (n-gram of same length)"""
+    error_str = "Error: at least 2 corpuses are needed to merge, aborting"
     if len(corpora) < 2:
-        print("Error: at least 2 corpuses are needed to merge, aborting")
-        return []
+        print(error_str)
+        return False
 
     # removing corpus that do not have the same ngram lenght
     ngram_length = len( corpora[0]["freq"] )
@@ -50,10 +54,10 @@ def read_corpora(filenames: list[Path]) -> list[dict]:
         print(f"Warning: removing {_name} from corpora because ngram length is different")
     
     if len(corpora) >= 2:
-        return corpora
+        return True
 
-    print("Error: at least 2 corpuses are needed to merge, aborting")
-    return []
+    print(error_str)
+    return False
 
 def mix(corpora:list[dict], name:str="mixed", ratio:list[float]=[]) -> dict:
     """merge corpora of same n-gram length, optionally with a giver ratio"""
@@ -93,6 +97,9 @@ if __name__ == "__main__":
         dir = Path(__file__).resolve().parent.parent
         files = [Path(f) for f in argv[1:]]
         corpora = read_corpora(files)
+        if not mergeable(corpora):
+            print("Error: cannot merge corpora, aborting")
+            exit()
         corpus = mix(corpora, name="mixed")
         with open(f"{corpus["name"]}.json", "w", encoding="utf-8") as outfile:
             json.dump(corpus, outfile, indent=4, ensure_ascii=False)
