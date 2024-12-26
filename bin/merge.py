@@ -17,7 +17,7 @@ def _sort_ngram_by_frequency(table, precision=3):
 
 
 def sort_by_frequency(corpus: dict, precision=3):
-    for ngram in range(1, len(corpus["freq"].keys())+1):
+    for index in range(1, len(corpus["freq"].keys())+1):
         ngram = str(ngram)
         corpus["freq"][ngram] = _sort_ngram_by_frequency(
             corpus["freq"][ngram], precision
