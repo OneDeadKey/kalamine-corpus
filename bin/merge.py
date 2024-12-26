@@ -46,7 +46,7 @@ def mergeable(corpora:list[dict]) -> bool:
         print(error_str)
         return False
 
-    # removing corpus that do not have the same ngram lenght
+    # removing corpus that do not have the same ngram length
     ngram_length = len( corpora[0]["freq"] )
     corpora_initial_length = len(corpora)
     corpora = [corpus for corpus in corpora if len(corpus["freq"]) == ngram_length]
@@ -60,7 +60,7 @@ def mergeable(corpora:list[dict]) -> bool:
     return False
 
 def mix(corpora:list[dict], name:str="mixed", weights:list[float]=None) -> dict:
-    """merge corpora of same n-gram length, optionally with a giver ratio"""
+    """merge corpora of same n-gram length, optionally with a given set of weight"""
     weights = weights or []
     if weights == []:
         # merge with same weight by default
