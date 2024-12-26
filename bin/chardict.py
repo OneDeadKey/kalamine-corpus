@@ -7,8 +7,6 @@ from sys import argv
 
 NGRAM_MAX_LENGTH = 4  # trigrams
 IGNORED_CHARS = "1234567890 \t\r\n\ufeff↵"
-APP_NAME = "kalamine"
-APP_AUTHOR = "1dk"
 
 
 def parse_corpus(txt: str) -> dict:
