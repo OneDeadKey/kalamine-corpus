@@ -26,35 +26,31 @@ def sort_by_frequency(corpus: dict, precision=3):
 
 def read_corpora(filenames: list[Path]) -> list[dict]:
     """open a collection of corpus from path and dump its content in a dictionary"""
-    corpora_dict = {}
+    corpora = []
     for filename in filenames:
         try:
             with open(filename) as f:
                 corpus = json.load(f)
-                corpora_dict[corpus["name"]] = corpus
+                corpora.append(corpus)
         except:
             print(
                 f"Warning: cannot open the `{filename.stem}` corpus; skipping this file"
             )
             continue
 
-    if len(corpora_dict) < 2:
+    if len(corpora) < 2:
         print("Error: at least 2 corpuses are needed to merge, aborting")
         return []
 
     # removing corpus that do not have the same ngram lenght
-    ngram_length = len( # 1st corpus in corpora
-        next(iter(corpora_dict.values()))["freq"]
-    )
-    for key in corpora_dict.keys():
-        corpus = corpora_dict[key]
-        if len(corpus["freq"]) != ngram_length:
-            _name = corpus["name"]
-            corpora_dict.pop(_name)
-            print(f"Warning: removing {_name} from corpora because ngram length is different")
+    ngram_length = len( corpora[0]["freq"] )
+    removed_corpuses = [corpus["name"] for corpus in corpora if len(corpus["freq"]) != ngram_length]
+    corpora = [corpus for corpus in corpora if len(corpus["freq"]) == ngram_length]
+    for _name in removed_corpuses:
+        print(f"Warning: removing {_name} from corpora because ngram length is different")
     
-    if len(corpora_dict) >= 2:
-        return list(corpora_dict.values())
+    if len(corpora) >= 2:
+        return corpora
 
     print("Error: at least 2 corpuses are needed to merge, aborting")
     return []
