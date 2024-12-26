@@ -75,13 +75,11 @@ def parse_corpus(txt: str) -> dict:
     return ngrams, ngrams_count
 
 
-def read_corpus(file: Path, name: str = "", encoding="utf-8") -> dict:
+def read_corpus(file: Path, encoding="utf-8") -> dict:
     """read a .txt file and provide a dictionary of n-grams"""
     try:
         if not file.is_file:
             raise Exception("Error, this is not a file")
-        if not name:
-            name = file.stem
         with file.open("r", encoding=encoding) as f:
             corpus_txt = "↵".join(f.readlines())
 
@@ -90,7 +88,6 @@ def read_corpus(file: Path, name: str = "", encoding="utf-8") -> dict:
 
     ngrams_freq, ngrams_count = parse_corpus(corpus_txt)
     return {
-        "name": name,
         "freq": ngrams_freq,
         "count": ngrams_count,
     }

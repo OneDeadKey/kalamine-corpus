@@ -48,10 +48,10 @@ def mergeable(corpora:list[dict]) -> bool:
 
     # removing corpus that do not have the same ngram lenght
     ngram_length = len( corpora[0]["freq"] )
-    removed_corpuses = [corpus["name"] for corpus in corpora if len(corpus["freq"]) != ngram_length]
+    corpora_initial_length = len(corpora)
     corpora = [corpus for corpus in corpora if len(corpus["freq"]) == ngram_length]
-    for _name in removed_corpuses:
-        print(f"Warning: removing {_name} from corpora because ngram length is different")
+    if len(corpora) != corpora_initial_length:
+        print(f"Error: cannot merge because corpus file format is different; all corpuses do not have the same ngram length")
     
     if len(corpora) >= 2:
         return True
@@ -71,7 +71,6 @@ def mix(corpora:list[dict], name:str="mixed", weights:list[float]=None) -> dict:
     ngram_length = range(1, len(corpora[0]["freq"].keys()) +1)
 
     output_corpus = {
-        "name": name,
         "freq": {str(n):{} for n in ngram_length},
         "count": {str(n):0 for n in ngram_length},
     }
@@ -97,7 +96,8 @@ if __name__ == "__main__":
         if not mergeable(corpora):
             print("Error: cannot merge corpora, aborting")
             exit()
-        corpus = mix(corpora, name="mixed")
-        with open(f"{corpus["name"]}.json", "w", encoding="utf-8") as outfile:
+        name = "mixed"
+        corpus = mix(corpora, name=name)
+        with open(f"{name}.json", "w", encoding="utf-8") as outfile:
             json.dump(corpus, outfile, indent=4, ensure_ascii=False)
         print(json.dumps(corpus, indent=4, ensure_ascii=False))
