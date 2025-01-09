@@ -59,7 +59,7 @@ def mergeable(corpora:list[dict]) -> bool:
     print(error_str)
     return False
 
-def mix(corpora:list[dict], name:str="mixed", weights:list[float]=None) -> dict:
+def mix(corpora:list[dict], weights:list[float]=None) -> dict:
     """merge corpora of same n-gram length, optionally with a given set of weight"""
     weights = weights or []
     if weights == []:
@@ -97,7 +97,7 @@ if __name__ == "__main__":
             print("Error: cannot merge corpora, aborting")
             exit()
         name = "mixed"
-        corpus = mix(corpora, name=name)
+        corpus = mix(corpora)
         with open(f"{name}.json", "w", encoding="utf-8") as outfile:
             json.dump(corpus, outfile, indent=4, ensure_ascii=False)
         print(json.dumps(corpus, indent=4, ensure_ascii=False))
